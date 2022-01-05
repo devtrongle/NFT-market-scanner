@@ -387,7 +387,7 @@ function getData(no, code, categoryID, categoryName) {
                 </tr>`
     document.getElementById(code).innerHTML = col
 
-    var url = `http://market-api.radiocaca.com/nft-sales?pageNo=1&pageSize=${pageSize}&sortBy=single_price&order=asc&category=${categoryID}`
+    var url = `https://market-api.radiocaca.com/nft-sales?pageNo=1&pageSize=${pageSize}&sortBy=single_price&order=asc&category=${categoryID}`
 
     $.getJSON(url, function(data) {
         console.log("Success")
