@@ -12,6 +12,18 @@
     <title>NFT market scanner - DevJames</title>
 
     <style>
+        .loader_50 {
+            margin-top: 50px;
+            border: 4px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 4px solid #3498db;
+            width: 50px;
+            height: 50px;
+            -webkit-animation: spin 0.5s linear infinite;
+            /* Safari */
+            animation: spin 0.5s linear infinite;
+        }
+        
         .loader {
             border: 4px solid #f3f3f3;
             border-radius: 50%;
@@ -49,7 +61,7 @@
     <table class="table">
         <thead class="thead-dark">
             <tr>
-                <th scope="col" colspan="11" id="timeUpdate">Cập nhật lần cuối: | By: <a href="https://t.me/batrong2709">James</a></th>
+                <th scope="col" colspan="11" id="timeUpdate">Cập nhật lần cuối: | Auth: <a href="https://t.me/batrong2709">Dev James</a></th>
             </tr>
             <tr>
                 <th scope="col" rowspan="2">#</th>
@@ -75,6 +87,10 @@
 
         </tbody>
     </table>
+
+    <center>
+        <div class="loader_50" id="loading" />
+    </center>
 
 
     <!-- Optional JavaScript -->
