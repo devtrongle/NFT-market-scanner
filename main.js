@@ -419,7 +419,7 @@ async function getFullData(no, code, categoryID, categoryName, tokenId) {
                         </td>
                     </tr>`;
         document.getElementById(code).innerHTML = col
-        document.getElementById('timeUpdate').innerHTML = "Cập nhật lần cuối: " + getCurrentTime() + ' | Auth: <a href="https://t.me/batrong2709">Dev James</a>';
+        document.getElementById('timeUpdate').innerHTML = "Cập nhật lần cuối: " + getCurrentTime() + ' | By: <a href="https://t.me/batrong2709">James</a>';
     });
 }
 
