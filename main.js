@@ -22,13 +22,13 @@ function getData() {
                 var col = `<tr id="${code}${tokenID}">
                 <th scope="row">${lineNo}</th>
                 <td>${categoryName}</td>
-                <td>?</td>
-                <td>?</td>
-                <td>?</td>
-                <td>?</td>
-                <td>?</td>
-                <td>?</td>
-                <td>?</td>
+                <td><div class="loader"/></td>
+                <td><div class="loader"/></td>
+                <td><div class="loader"/></td>
+                <td><div class="loader"/></td>
+                <td><div class="loader"/></td>
+                <td><div class="loader"/></td>
+                <td><div class="loader"/></td>
                 <td><div class="loader"/></td>
             </tr>`
                 tableBody = $("table tbody");
@@ -57,10 +57,6 @@ function getWholesaleCount(data, startAt, endAt) {
         if (c >= startAt && c <= endAt) {
             count++;
             prices.push(Number(item['fixed_price']) / Number(item['count']));
-        }
-
-        if (item['name'] == "Metamon Egg" && item['count'] > 500 && startAt == 501) {
-            console.log(item)
         }
     }
 
@@ -102,24 +98,35 @@ async function getFullData(no, code, categoryID, categoryName, tokenId) {
         var wholesale_count_51 = getWholesaleCount(data, 51, 150);
 
         //Số lượng sỉ 151
-        var wholesale_count_151 = getWholesaleCount(data, 151, 500);
+        var wholesale_count_151 = getWholesaleCount(data, 151, 250);
+
+        //Số lượng sỉ 251
+        var wholesale_count_251 = getWholesaleCount(data, 251, 500);
 
         //Số lượng sỉ 500
         var wholesale_count_500 = getWholesaleCount(data, 501, 999999999999);
 
+        var raw_text = getText(getCurrentTime(),
+            categoryName, Intl.NumberFormat().format(count),
+            Intl.NumberFormat().format(price),
+            retail_cout,
+            wholesale_count_2,
+            wholesale_count_51,
+            wholesale_count_151,
+            wholesale_count_251,
+            wholesale_count_500);
+
         var col = `<tr>
                         <th scope="row">${no}</th>
-                        <td>${categoryName}</td>
-                        <td>${count == 0 ? 'x' : Intl.NumberFormat().format(count)}</td>
+                        <td>${categoryName} <textarea id="textarea${code}" style="display:none">${raw_text}</textarea><button type="button" class="btn btn-light btn-sm" style="margin-left: 10px" onclick="copied('textarea${code}')">Coppy</button></td>
+                        <td>${count == 0 ? '-' : Intl.NumberFormat().format(count)}</td>
                         ${getValueCol(retail_cout, true)}
                         ${getValueCol(wholesale_count_2)}
                         ${getValueCol(wholesale_count_51)}
                         ${getValueCol(wholesale_count_151)}
+                        ${getValueCol(wholesale_count_251)}
                         ${getValueCol(wholesale_count_500)}
-                        <td><span style="color: rgb(2, 109, 248);">${price == 0 ? 'x' : Intl.NumberFormat().format(price) + '<span> <img src="./raca.png" width="15px" height="15px"/>'} </td>
-                        <td>
-                        <span style="color: green;"><b>Completed</b></span>
-                        </td>
+                        <td><span style="color: rgb(2, 109, 248);">${price == 0 ? '-' : Intl.NumberFormat().format(price) + '<span> <img src="./raca.png" width="15px" height="15px"/>'} </td>
                     </tr>`;
         document.getElementById(code).innerHTML = col
         document.getElementById('timeUpdate').innerHTML = "Cập nhật lần cuối: " + getCurrentTime() + ' | By: <a href="https://t.me/batrong2709">James</a>';
@@ -129,7 +136,30 @@ async function getFullData(no, code, categoryID, categoryName, tokenId) {
 function getValueCol(val, isRetail = false) {
     var color = isRetail ? 'rgb(248, 100, 2)' : 'rgb(219, 2, 248)'
     if (val['count'] == 0)
-        return `<td>x</td>`;
+        return `<td>-</td>`;
     else
         return `<td><span style="color: ${color}">${Intl.NumberFormat().format(val['count'])}</span><br><span style="color: rgb(2, 109, 248);">${Intl.NumberFormat().format(val['lowest_price'])}</span> <img src="./raca.png" width="15px" height="15px"/></td>`;
+}
+
+function copied(code) {
+    /* Get the text field */
+    var copyText = document.getElementById(code);
+
+    /* Copy the text inside the text field */
+    navigator.clipboard.writeText(copyText.defaultValue);
+
+    alert("Raw text copied successfully");
+}
+
+function getText(time, categoryName, total, lowest_price, retail_cout, wholesale_count_2, wholesale_count_51, wholesale_count_151, wholesale_count_251, wholesale_count_500) {
+    return `📢 Cập nhật lần cuối: ${time} | By: James <br>
+    💚  ${categoryName} 💚
+    👉 Tổng trên chợ:  ${total} | Giá bán thấp nhất:  ${lowest_price} Raca 
+    👉 Số lệnh bán lẻ [1]: ${Intl.NumberFormat().format(retail_cout['count'])} (Giá thấp nhất: ${Intl.NumberFormat().format(retail_cout['lowest_price'])} Raca) 
+    👉 Số lệnh bán sỉ từ [2-50]: ${Intl.NumberFormat().format(wholesale_count_2['count'])} (Giá thấp nhất: ${Intl.NumberFormat().format(wholesale_count_2['lowest_price'])} Raca)
+    👉 Số lệnh bán sỉ từ [51-150]: ${Intl.NumberFormat().format(wholesale_count_51['count'])} (Giá thấp nhất: ${Intl.NumberFormat().format(wholesale_count_51['lowest_price'])} Raca)
+    👉 Số lệnh bán sỉ từ [151-250]: ${Intl.NumberFormat().format(wholesale_count_151['count'])} (Giá thấp nhất:  ${Intl.NumberFormat().format(wholesale_count_151['lowest_price'])} Raca) 
+    👉 Số lệnh bán sỉ từ [251-500]: ${Intl.NumberFormat().format(wholesale_count_251['count'])} (Giá thấp nhất:  ${Intl.NumberFormat().format(wholesale_count_251['lowest_price'])} Raca) 
+    👉 Số lệnh bán sỉ trên [>500]: ${Intl.NumberFormat().format(wholesale_count_500['count'])} (Giá thấp nhất:  ${Intl.NumberFormat().format(wholesale_count_500['lowest_price'])} Raca)`
+
 }
