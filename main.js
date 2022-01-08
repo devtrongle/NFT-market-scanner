@@ -152,7 +152,7 @@ function copied(code) {
 }
 
 function getText(time, categoryName, total, lowest_price, retail_cout, wholesale_count_2, wholesale_count_51, wholesale_count_151, wholesale_count_251, wholesale_count_500) {
-    return `📢 Cập nhật lần cuối: ${time} | By: James <br>
+    return `📢 Cập nhật lần cuối: ${time} | By: James
     💚  ${categoryName} 💚
     👉 Tổng trên chợ:  ${total} | Giá bán thấp nhất:  ${lowest_price} Raca 
     👉 Số lệnh bán lẻ [1]: ${Intl.NumberFormat().format(retail_cout['count'])} (Giá thấp nhất: ${Intl.NumberFormat().format(retail_cout['lowest_price'])} Raca) 
